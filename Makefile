@@ -8,3 +8,8 @@ all : $(NAME)
 
 $(NAME) : $(FILES)
 		$(C_FLAG) $(FILES) -o $(NAME)
+
+fclean:
+	rm -f $(NAME)
+
+re: fclean all
