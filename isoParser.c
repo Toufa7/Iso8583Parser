@@ -1,5 +1,10 @@
 #include "./isoParser.h"
 
+#define bitset(byte,nbit)   ((byte) |=  (1<<(nbit)))
+#define bitclear(byte,nbit) ((byte) &= ~(1<<(nbit)))
+#define bitflip(byte,nbit)  ((byte) ^=  (1<<(nbit)))
+#define bitcheck(byte,nbit) ((byte) &   (1<<(nbit)))
+
 
 char *substr(char *str , int s, int len) {
     char *sub = malloc(sizeof(char) * (len + 1));
@@ -71,7 +76,6 @@ void    mtiParser(char *mti) {
             break;
     }
 
-
     // Message Function
     printf("%d: ", ((atoi(mti) / 10) % 10));
     switch (((atoi(mti) / 10) % 10))
@@ -134,10 +138,14 @@ void    mtiParser(char *mti) {
 int main(int ac, char *av[]) {
     if (ac != 2)
         return (ft_error("Please provide ISO Message\n"));
+
+
+    t_data_element *data_element = (t_data_element *) (64, sizeof(t_data_element));
     t_isoMsgData *a = malloc(sizeof(t_isoMsgData));
+
+    init(data_element);    
     a->mti = substr(av[1], 0, 4);
     a->bitMap = substr(av[1], 4, strlen(av[1]) - 4);
     mtiParser(a->mti);
-
 }
 
