@@ -1,8 +1,8 @@
-NAME = iosParser
+NAME = iosParser 
 
 C_FLAG = cc -Wall -Wextra -Werror
 
-FILES = isoParser.c
+FILES = isoParser.c check_bitmap.c init_data_element.c 
 
 all : $(NAME)
 
