@@ -135,17 +135,55 @@ void    mtiParser(char *mti) {
 
 }
 
+// void convertBinary(char *bitMap, char *data, t_data_element *data_element) {
+//     char *bin = calloc(strlen(bitMap), sizeof(char));
+//     for (size_t i = 0;i < strlen(bitMap); i++){
+//         int value = isdigit(bitMap[i]) ? bitMap[i] - '0' : toupper(bitMap[i]) - 'A' + 10;
+//         for (int j = 3; j >= 0; j--)
+//         {
+//             if ((value >> j) & 1)
+//                 strcat(bin, "1");
+//             else
+//                 strcat(bin, "0");
+//         }
+//     }
+//     printf("****************** [Binary] ***********************\n");
+//     printf("%s\n", bin);
+//     for (int i = 0; i < strlen(bin); i++){
+//         if (bin[i] == '1') {
+//             printf("%d - %s - %d\n", i + 1, data_element[i - 1].name, data_element[i - 1].type );
+//             data_element[i].is_exist = true;
+//         }
+//     }
+// }
+
+bool checkInput(char *av) {
+    for (int i = 0; i < strlen(av); i++) {
+        if (!((av[i] >= '0' && av[i] <= '9') || (av[i] >= 'A' && av[i] <= 'F')))
+            return (false);
+    }
+    return (true);
+}
+
 int main(int ac, char *av[]) {
     if (ac != 2)
         return (ft_error("Please provide ISO Message\n"));
+    if (!checkInput(av[1]))
+        return (ft_error("Invalid Format\n"));
 
+    t_data_element  *data_element;
+    t_isoMsgData    *input;
+    int             len;
 
-    t_data_element *data_element = (t_data_element *) (64, sizeof(t_data_element));
-    t_isoMsgData *a = malloc(sizeof(t_isoMsgData));
+    data_element = calloc(64, sizeof(t_data_element));
+    input = malloc(sizeof(t_isoMsgData));
+    init(data_element);
 
-    init(data_element);    
-    a->mti = substr(av[1], 0, 4);
-    a->bitMap = substr(av[1], 4, strlen(av[1]) - 4);
-    mtiParser(a->mti);
+    len = (av[1][4] >= '0' && av[1][4] <= '7') ? 16 : 32;
+    input->mti = substr(av[1], 0, 4);
+    input->bitMap = substr(av[1], 4, len);
+    input->data = substr(av[1], len + 4, strlen(av[1]) - (len + 4));
+    mtiParser(input->mti);
+    // convertBinary(input->bitMap, input->data, data_element);
 }
 
